@@ -2,9 +2,9 @@
 
 > Simple Laravel project management app with manual user invite, custom password reset page, profile & tasks management — styled with Bootstrap.
 
-![Laravel](https://img.shields.io/badge/Laravel-10.x-red?style=flat&logo=laravel)
-![PHP](https://img.shields.io/badge/PHP-%3E=8.0-blue?logo=php)
-![License](https://img.shields.io/badge/license-MIT-brightgreen)
+![Laravel](https://img.shields.io/badge/Laravel-8.x-red?style=flat&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-%3E=7.0-blue?logo=php)
+<!-- ![License](https://img.shields.io/badge/license-MIT-brightgreen) -->
 
 ---
 
@@ -18,14 +18,14 @@
 
 ---
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 *(Add real screenshots here)*
 
 | Dashboard | Change Password |
 |--|--|
 | ![](screenshots/dashboard.png) | ![](screenshots/change_password.png) |
 
----
+--- -->
 
 ## ⚙ Built With
 - Laravel 8.x
@@ -40,7 +40,7 @@
 
 ### 📥 Clone & install
 ```bash
-git clone https://github.com/your-username/project-management-system.git
+git clone https://github.com/NahinShahriar/project-management-system.git
 cd project-management-system
 composer install
 ###🛠 Setup .env

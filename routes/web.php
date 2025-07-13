@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('users', UserManageController::class);
 
-    // Logout route (usually should be inside auth)
+    // Logout route 
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     //
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
