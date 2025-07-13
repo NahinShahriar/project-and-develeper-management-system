@@ -59,3 +59,101 @@ MAIL_PASSWORD=your_password
 MAIL_FROM_ADDRESS=admin@example.com
 MAIL_FROM_NAME="Project Management"
 
+🏗 Migrate database
+bash
+Copy
+Edit
+php artisan migrate
+If password_resets table is missing:
+
+bash
+Copy
+Edit
+php artisan make:migration create_password_resets_table
+Define:
+
+php
+Copy
+Edit
+Schema::create('password_resets', function (Blueprint $table) {
+    $table->string('email')->index();
+    $table->string('token');
+    $table->timestamp('created_at')->nullable();
+});
+Then:
+
+bash
+Copy
+Edit
+php artisan migrate
+🧑‍💻 Seed admin user (optional)
+bash
+Copy
+Edit
+php artisan tinker
+>>> \App\Models\User::create(['name'=>'Admin','email'=>'admin@example.com','password'=>bcrypt('password')]);
+▶ Run the app
+bash
+Copy
+Edit
+php artisan serve
+Visit: http://127.0.0.1:8000
+
+📌 Main Routes
+URL	Purpose
+/	Welcome page
+/dashboard	Dashboard (after login)
+/users	Manage users (admin)
+/projects	Manage projects
+/tasks	Manage tasks
+/profile	View profile
+/profile/change-password	Change password
+/password/reset/{token}	Set/reset password via email link
+
+✉ Password Reset Flow
+Admin adds user (with random password & token)
+
+Sends email with reset link
+
+User clicks → opens custom password_set page
+
+User sets new password → updates in users table
+
+🧩 Planned Next Features
+Role & permissions (admin vs user)
+
+Task due dates & reminders
+
+File attachments
+
+Email notifications on updates
+
+📝 License
+MIT
+
+✒ Author
+Made with ❤️ by Your Nadid
+
+yaml
+Copy
+Edit
+
+---
+
+✅ **How to use:**
+- Copy everything above.
+- Save it as: `README.md`  
+- Place in your project root (same level as `artisan`, `app/`, etc).
+- Customize:
+  - Replace `your-username` with your GitHub username.
+  - Add real screenshots inside `screenshots/` folder (create it).
+  - Change project name if you want.
+
+---
+
+If you'd like:  
+> ✅ **“Make also a `.env.example` template & folder tree”**  
+Just tell me — and I’ll do it too! 🚀
+
+
+
