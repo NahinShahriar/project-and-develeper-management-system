@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskCreateNotification extends Notification
+class UpdateTaskNotification extends Notification
 {
     use Queueable;
 
@@ -16,7 +16,7 @@ class TaskCreateNotification extends Notification
      *
      * @return void
      */
-    public $task_name;
+     public $task_name;
     public $task_id;
     public function __construct($task_id,$task_name)
     {
@@ -41,13 +41,13 @@ class TaskCreateNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Task Assign')
-                    ->line('New Task Assigned To You')
+                    ->subject('Task Updated')
+                    ->line('Task Updated Please Check')
                     ->line('Task Name: '.$this->task_name)
-                   ->action('Task Url', url('/seetasks/'.$this->task_id))
+                    ->action('Task Url', url('/seetasks/'.$this->task_id))
                     ->line('Thank you for using our application!');
     }
     public function toDatabase($notifiable)

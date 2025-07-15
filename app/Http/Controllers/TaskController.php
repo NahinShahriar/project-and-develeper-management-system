@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\Project;
 use Illuminate\support\Facades\Auth;
 use App\Notifications\TaskCreateNotification;
+ use App\Notifications\UpdateTaskNotification;
 
 class TaskController extends Controller
 {
@@ -49,6 +50,8 @@ class TaskController extends Controller
          $task->due_date=     $req->due_date;
          $task->assigned_to=  $req->assigned_to;
          $task->status=       $req->status;
+         $notify_user=User::find($task->assigned_to);
+         $notify_user->notify(new UpdateTaskNotification( $task->id,$task->title));
          
          
          $task->update();
