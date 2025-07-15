@@ -30,6 +30,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
     Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
+     Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
     Route::get('/tasks/search', [TaskController::class, 'index'])->name('task.search');
 
     // Task CRUD
@@ -40,10 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/status_update/{id}', [UserController::class, 'task_update'])->name('status.update');
     Route::post('/tasks/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
 
-    // Projects and users management
-    Route::resource('projects', ProjectController::class);
-    Route::resource('users', UserManageController::class);
-
+   
     // Logout route 
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     //
@@ -51,5 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/change-password', [UserController::class, 'showChangePasswordForm'])->name('change_password');
      Route::post('/profile/change-password', [UserController::class, 'ChangePassword'])->name('password.change');
 
-
 });
+
+    Route::middleware(['auth','admin'])->group( function()
+    {
+        // Projects and users management 
+        Route::resource('projects', ProjectController::class);
+        Route::resource('users', UserManageController::class);
+    });

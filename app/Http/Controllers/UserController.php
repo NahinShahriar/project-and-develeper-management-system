@@ -146,7 +146,7 @@ public function create(Request $request, $token)
         ]);
         if(!Hash::check($request->password,Auth::user()->password))
         {
-            return withErrors([
+            return back()-> withErrors([
                 'error'=>"Current Passowrd Does not Match",
             ]);
         }

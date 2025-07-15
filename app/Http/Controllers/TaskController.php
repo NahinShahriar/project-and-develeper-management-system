@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Models\Task;
 use App\Models\Project;
 use Illuminate\support\Facades\Auth;
+use App\Notifications\TaskCreateNotification;
 
 class TaskController extends Controller
 {
     public function index( Request $req)
     {
         //dd(Auth::id());
-      $query=Task::with('assignedUser','assignbyUser');
+        $query=Task::with('assignedUser','assignbyUser');
         // $tasks=dd(Task::with('assignedUser')->where('assigned_to','=',Auth::id())->toSql());
        if(Auth::user()->role=='user')
        {
@@ -89,9 +90,26 @@ class TaskController extends Controller
         $task->assigned_to = $validated['assigned_to'];
         $task->assigned_by= $assigned_by;
         $task->save();
+        $notify_user=User::find($task->assigned_to);
+        $notify_user->notify(new TaskCreateNotification( $task->id,$task->title));
         return redirect()->route('task.index')->with('success', 'Task created successfully!');
          
+      }
 
+       public function show_tasks($id)
+      {
+          $task = Task::findOrFail($id);
+          $user = auth()->user();
+
+          if ( $user->id == $task->assigned_to) {
+              return view('task.show', compact('task'));
+          }
+
+          session()->flash('error', 'Unauthorized. Please login with correct account.');
+          auth()->logout();
+          return redirect()->route('homepage');
 
       }
+
+
 }

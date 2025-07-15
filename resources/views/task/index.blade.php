@@ -28,7 +28,7 @@
                  <th style="text-align: center;">Assigned By</th>
                  @if(Auth::user()->role=='admin')
                     <th>Assigned</th>
-                @endif
+                 @endif
                 <th style="text-align: center;">Status</th>
                 <th style="text-align: center;">Due Date</th>
                 <th colspan="2" style="text-align: center;">Action</th>

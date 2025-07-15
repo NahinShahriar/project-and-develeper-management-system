@@ -149,11 +149,5 @@ Edit
   - Add real screenshots inside `screenshots/` folder (create it).
   - Change project name if you want.
 
----
-
-If you'd like:  
-> ✅ **“Make also a `.env.example` template & folder tree”**  
-Just tell me — and I’ll do it too! 🚀
-
 
 
