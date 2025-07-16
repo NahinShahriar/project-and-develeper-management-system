@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Admin\UserManageController;
+use App\Http\Controllers\MailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,7 +31,9 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
     Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
-     Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
+    //  Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
+    Route::get('/seetask/{id}', [TaskController::class, 'show_task']);
+
     Route::get('/tasks/search', [TaskController::class, 'index'])->name('task.search');
 
     // Task CRUD
@@ -52,8 +55,12 @@ Route::middleware('auth')->group(function () {
 });
 
     Route::middleware(['auth','admin'])->group( function()
-    {
+    {   //route for admin view
+        Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
         // Projects and users management 
         Route::resource('projects', ProjectController::class);
         Route::resource('users', UserManageController::class);
+
+          //for sendmail
+         Route::post('/sendmail/{id}', [MailController::class, 'send_mail'])->name('users.sendMail');
     });

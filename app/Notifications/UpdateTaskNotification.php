@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UpdateTaskNotification extends Notification
+class UpdateTaskNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -47,7 +47,7 @@ class UpdateTaskNotification extends Notification
                     ->subject('Task Updated')
                     ->line('Task Updated Please Check')
                     ->line('Task Name: '.$this->task_name)
-                    ->action('Task Url', url('/seetasks/'.$this->task_id))
+                    ->action('View Task', url('/seetask/'.$this->task_id))     
                     ->line('Thank you for using our application!');
     }
     public function toDatabase($notifiable)

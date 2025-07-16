@@ -5,7 +5,12 @@
     @if(Auth::user()->role=='admin')
     <a href="{{route('task.create')}}" class="btn btn-success mb-3">+ Add New Task</a>
     @endif
-
+          @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <h2 class="mb-4">Assigned Task List</h2>
     <form action="{{ route('task.search') }}" method="GET" class="mb-3">
         <input type="text" name="search" placeholder="Search tasks..." class="form-control mb-6" id="searchInput" style="width: 30%;">
@@ -23,6 +28,7 @@
         <thead class="thead-dark">
             <tr>
                 <th style="text-align: center;">SL</th>
+                <th style="text-align: center;">Task Id</th>
                 <th style="text-align: center;">Title</th>
                 <th style="text-align: center;">Description</th>
                  <th style="text-align: center;">Assigned By</th>
@@ -38,6 +44,7 @@
             @forelse($tasks as $index => $task)
                 <tr>
                     <td>{{ $index + 1 }}</td>
+                    <td>{{ $task->id }}</td>
                     <td>{{ $task->title }}</td>
                     <td>{{ $task->description }}</td>
                     <td>{{ $task->assignbyUser ? $task->assignbyUser->name : 'N/A' }}</td>

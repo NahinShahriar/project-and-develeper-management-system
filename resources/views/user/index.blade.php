@@ -24,34 +24,66 @@
                 <th style="text-align: center;">SL</th>
                 <th style="text-align: center;">Name</th>
                 <th style="text-align: center;">Email</th>
-                <th colspan="2" style="text-align: center;">Action</th>
+                <th colspan="3" style="text-align: center;">Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($users as $index => $user)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td> <form action="{{route('users.edit',$user->id)}}" method="get">
-                            <button type="submit" class="btn btn-sm btn-warning">Edit</button>
-                        </form></td>
-                    <td>
-                        <form action="{{route('users.destroy',$user->id)}}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                     </td>
+    @foreach($users as $index => $user)
+        <tr>
+            <td style="text-align: center;">{{ $index + 1 }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>
+                <form action="{{ route('users.edit', $user->id) }}" method="get">
+                    <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="{{ route('users.destroy', $user->id) }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+            <td>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#sendMailModal{{ $user->id }}">
+                    Send Mail
+                </button>
+            </td>
+        </tr>
 
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="text-center">No User found.</td>
-                </tr>
-            @endforelse
-            
-        </tbody>
+        <!-- Modal -->
+        <div class="modal fade" id="sendMailModal{{ $user->id }}" tabindex="-1" aria-labelledby="sendMailModalLabel{{ $user->id }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ route('users.sendMail', $user->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sendMailModalLabel{{ $user->id }}">Send Mail to {{ $user->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="subject{{ $user->id }}" class="form-label">Subject</label>
+                            <input type="text" class="form-control" name="subject" id="subject{{ $user->id }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message{{ $user->id }}" class="form-label">Message</label>
+                            <textarea class="form-control" name="message" id="message{{ $user->id }}" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    @endforeach
+</tbody>
+
     </table>
 
     <div style="display: flex; justify-content: center;">

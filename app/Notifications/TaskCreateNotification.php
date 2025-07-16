@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskCreateNotification extends Notification
+class TaskCreateNotification extends Notification  implements ShouldQueue
 {
     use Queueable;
 
@@ -47,7 +47,8 @@ class TaskCreateNotification extends Notification
                     ->subject('Task Assign')
                     ->line('New Task Assigned To You')
                     ->line('Task Name: '.$this->task_name)
-                   ->action('Task Url', url('/seetasks/'.$this->task_id))
+                //    ->action('Task Url', url('/seetasks/'.$this->task_id))
+                     ->action('View Task', url('/seetask/'.$this->task_id)) 
                     ->line('Thank you for using our application!');
     }
     public function toDatabase($notifiable)

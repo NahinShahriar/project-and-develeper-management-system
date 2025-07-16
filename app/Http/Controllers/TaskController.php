@@ -29,8 +29,15 @@ class TaskController extends Controller
      
          $tasks=$query->paginate(10);
        
-
+         if ($req->wantsJson()) {
+        return response()->json([
+            'success' => true,
+            'data' => $tasks
+        ]);
+    }
         return view('task.index',compact('tasks'));
+
+        
     }
 
       public function task_edit($id)
@@ -50,19 +57,19 @@ class TaskController extends Controller
          $task->due_date=     $req->due_date;
          $task->assigned_to=  $req->assigned_to;
          $task->status=       $req->status;
-         $notify_user=User::find($task->assigned_to);
-         $notify_user->notify(new UpdateTaskNotification( $task->id,$task->title));
          
          
          $task->update();
-         return redirect()->route('task.index');
+         $notify_user=User::find($task->assigned_to);
+         $notify_user->notify(new UpdateTaskNotification( $task->id,$task->title));
+         return redirect()->route('task.index')->with('success','Task Updated Successfully');
       }
 
       public function task_delete(Request $req,$id)
       {
          $task=Task::with('assignedUser')->findOrFail($id);
          $task->delete();
-          return redirect()->route('task.index');
+        return redirect()->route('task.index')->with('success','Task Deleted Successfully');
 
       }
     public function task_create()
@@ -99,15 +106,17 @@ class TaskController extends Controller
          
       }
 
-       public function show_tasks($id)
+       public function show_task($id)
       {
           $task = Task::findOrFail($id);
           $user = auth()->user();
-
+          if (request()->wantsJson()) {
+          return response()->json(['success' => true, 'data' => $task]);
+          }
           if ( $user->id == $task->assigned_to) {
               return view('task.show', compact('task'));
           }
-
+          
           session()->flash('error', 'Unauthorized. Please login with correct account.');
           auth()->logout();
           return redirect()->route('homepage');
