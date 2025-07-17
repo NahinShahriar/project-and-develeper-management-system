@@ -63,10 +63,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
         // Projects and users management 
         Route::resource('projects', ProjectController::class);
+        //for Manage User
         Route::resource('users', UserManageController::class);
+        //For User Registration
         Route::get('user/create', [RegisterController::class,'create'])->name('user.create');
         Route::post('user/store',[ RegisterController::class,'store'])->name('user.store');
 
           //for sendmail
-         Route::post('/sendmail/{id}', [MailController::class, 'send_mail'])->name('users.sendMail');
+        Route::post('/sendmail/{id}', [MailController::class, 'send_mail'])->name('users.sendMail');
     });

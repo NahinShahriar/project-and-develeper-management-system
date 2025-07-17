@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Edit User')
+@section('title', 'Update Profile')
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-4">Edit User</h2>
+    <h2 class="mb-4">Update Profile</h2>
 
     {{-- Show validation errors if any --}}
     @if ($errors->any())
@@ -25,7 +25,7 @@
     @endif
 
     {{-- Project create form --}}
-    <form action="{{ route('users.update',$user->id) }}" method="POST" style="width:400px">
+    <form action="{{ route('profile.update',$user->id) }}" method="POST" style="width:400px">
         @csrf
         @method('PUT')
 
@@ -47,16 +47,15 @@
 
         <div class="mb-3">
             <label for="email" class="form-label">User Email <span class="text-danger">*</span></label>
-            <input 
-                type="text" 
-                name="email" 
-                id="name" 
-                class="form-control @error('email') is-invalid @enderror" 
-                value="{{$user->email}}" 
-                placeholder="Enter User email"
-                {{Auth::user()->role=='user'? 'disabled': ''}}
-               
-            >
+           <!-- If user is admin, show editable field -->
+            @if(auth()->user()->role === 'admin')
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control">
+            @else
+                <!-- Regular users see email as readonly, and it still gets submitted -->
+                <input type="email" value="{{ $user->email }}" class="form-control" disabled>
+                <input type="hidden" name="email" value="{{ $user->email }}">
+            @endif
+
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

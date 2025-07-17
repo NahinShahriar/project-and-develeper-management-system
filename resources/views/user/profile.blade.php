@@ -35,7 +35,7 @@
 
                 <div class="card-footer text-end">
                     {{-- Optional edit profile / change password --}}
-                    <a href="{{route('users.edit',Auth::user()->id)}}" class="btn btn-sm btn-outline-secondary">Edit Profile</a>
+                    <a href="{{route('profile.edit',Auth::user()->id)}}" class="btn btn-sm btn-outline-secondary">Edit Profile</a>
                     <a href="{{route('change_password')}}" class="btn btn-sm btn-outline-warning">Change Password</a>
                 </div>
             </div>

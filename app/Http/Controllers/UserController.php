@@ -126,13 +126,14 @@ class UserController extends Controller
     ]);
         return back()->with('success', 'Password changed successfully!');
     }
-
+   //profile Edit
    public function edit($id)
     {  $user=User::findOrFail($id);
-        return view('user.edit',compact('user'));
+        return view('user.profile_edit',compact('user'));
     }
 
-    
+   // profile update
+   /*
     public function update(Request $request, $id)
     {
         $user=User::findOrFail($id);
@@ -146,5 +147,28 @@ class UserController extends Controller
             $user->update($validate);
             return redirect()->route('task.index')->with('success','User Updated Successfully');
     }
+            */
+    public function update(Request $request, $id)
+        {
+            $user = User::findOrFail($id);
+
+            $rules = [
+                'name' => 'required|string',
+            ];
+
+            // Only allow email change if the current user is admin
+            if (auth()->user()->role === 'admin') {
+                $rules['email'] = 'required|email|unique:users,email,' . $id;
+            } else {
+                // For non-admin, force email to current one so they can't change it
+                $request->merge(['email' => $user->email]);
+            }
+
+            $validated = $request->validate($rules);
+            $user->update($validated);
+
+            return redirect()->route('task.index')->with('success', 'Profile Updated Successfully');
+        }
+
 
 }
