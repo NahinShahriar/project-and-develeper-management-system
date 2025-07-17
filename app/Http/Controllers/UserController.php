@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
+
 class UserController extends Controller
 {
 
@@ -17,36 +18,9 @@ class UserController extends Controller
     {
         return view('dashboard');
     }
-    public function login( Request $request)
-    {
-        $credentials=$request->validate([
-            'email'=>'required|email',
-            'password'=>'required',
+   
 
-        ]);
-        $remember=$request->has('remember');
-        if(Auth::attempt($credentials,$remember))
-        {
-            if(Auth::user()->role=='admin')
-            {
-                return redirect()->route('dashboard')->with('success','Login Successfully'); 
-            }
-               return redirect()->route('task.index')->with('success','Login Successfully'); 
-        }
-        else
-        {
-            return back()->withErrors([
-                'error'=>'Inavalid Credentials',
-            ])->withInput();
-        }
-
-    }
-
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('homepage');
-    }
+   
 
 
     public function task_update(Request $req,$id)
@@ -69,8 +43,8 @@ class UserController extends Controller
 //             $email = $request->email;
 //             return view('password_set', compact('token', 'email'));
 //         }
-public function create(Request $request, $token)
-{
+    public function create(Request $request, $token)
+    {
     // Force logout if someone is logged in
     if (Auth::check()) {
         Auth::logout();
@@ -123,10 +97,7 @@ public function create(Request $request, $token)
     }
     }
 
-    public function showLoginForm()
-    {
-        return view('welcome');
-    }
+   
      public function profile()
     {
         return view('user.profile');
@@ -155,4 +126,25 @@ public function create(Request $request, $token)
     ]);
         return back()->with('success', 'Password changed successfully!');
     }
+
+   public function edit($id)
+    {  $user=User::findOrFail($id);
+        return view('user.edit',compact('user'));
+    }
+
+    
+    public function update(Request $request, $id)
+    {
+        $user=User::findOrFail($id);
+        $validate=$request->validate(
+            [
+                  'name'=>'required|string',
+                'email' => 'required|unique:users,email,' . $id,
+      
+            ]
+            );
+            $user->update($validate);
+            return redirect()->route('task.index')->with('success','User Updated Successfully');
+    }
+
 }

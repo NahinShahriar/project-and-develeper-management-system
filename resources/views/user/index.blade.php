@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     @if(Auth::user()->role=='admin')
-    <a href="{{route('users.create')}}" class="btn btn-success mb-3">+ Add New User</a>
+    <a href="{{route('user.create')}}" class="btn btn-success mb-3">+ Add New User</a>
     @endif
   @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">

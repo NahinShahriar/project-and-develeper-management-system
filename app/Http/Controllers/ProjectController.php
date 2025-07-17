@@ -7,6 +7,8 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+use App\Notifications\ProjectNotification;
+
 class ProjectController extends Controller
 {
     /**
@@ -24,8 +26,7 @@ class ProjectController extends Controller
             ->orWhere('description', 'like', '%' . $search . '%');
         }
         $projects=$query->paginate(10);
-        $users=User::with('projects')->get();
-        // dd($users);
+        $users=User::with('projects')->get();  
         return view('projects.index',['projects'=>$projects,'users'=>$users]);
     }
 
@@ -63,6 +64,11 @@ class ProjectController extends Controller
         $data->end_date=$valiedate['end_date'];
         $data->created_by=$user_id;
         $data->save();
+        $notify_users=User::where('role','=','tl')->get();
+        foreach($notify_users as $notify_user)
+        {
+            $notify_user->notify(new ProjectNotification($data->name) );
+        }
        return redirect()->route('projects.index')->with('success', 'Project created successfully!');
 
     }
@@ -115,8 +121,14 @@ class ProjectController extends Controller
         $data->start_date=$valiedate['start_date'];
         $data->end_date=$valiedate['end_date'];
         $data->created_by=$user_id;
-        $data->update();
-       return redirect()->route('projects.index')->with('success', 'Project Updated successfully!');
+        if ($data->isDirty())
+        {
+            $data->update();
+            return redirect()->route('projects.index')->with('success', 'Project Updated successfully!');
+        }
+     
+       return redirect()->route('projects.index')->with('success', 'No Changes');
+       
     }
 
     /**

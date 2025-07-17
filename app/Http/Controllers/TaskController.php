@@ -34,7 +34,7 @@ class TaskController extends Controller
             'success' => true,
             'data' => $tasks
         ]);
-    }
+           }
         return view('task.index',compact('tasks'));
 
         

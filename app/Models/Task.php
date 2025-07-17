@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use HasFactory,softDeletes;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'title','project_id' ,'description', 'due_date', 'status', 'assigned_to',

@@ -25,7 +25,7 @@
     @endif
 
     {{-- Project create form --}}
-    <form action="{{ route('users.store') }}" method="POST" style="width:400px">
+    <form action="{{ route('user.store') }}" method="POST" style="width:400px">
         @csrf
 
         <div class="mb-3">

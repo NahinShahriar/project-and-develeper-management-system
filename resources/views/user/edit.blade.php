@@ -54,6 +54,7 @@
                 class="form-control @error('email') is-invalid @enderror" 
                 value="{{$user->email}}" 
                 placeholder="Enter User email"
+                {{Auth::user()->role=='user'? 'disabled': ''}}
                
             >
             @error('email')

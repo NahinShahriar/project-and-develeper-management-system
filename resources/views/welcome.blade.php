@@ -87,7 +87,7 @@
                     <div class="welcome-icon mb-2">
                         <i class="fas fa-tasks"></i>
                     </div>
-                    <h1 class="welcome-title">Welcome to Project Management System</h1>
+                    <h1 class="welcome-title">Welcome to Project Management System </h1>
                     <p class="lead mb-0">Manage your projects efficiently and effectively.</p>
                 </div>
             </div>
@@ -100,20 +100,24 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="mb-3 d-flex justify-content-center">
-                            <input type="text" name="email" class="form-control" style="max-width: 260px;" placeholder="Email" autofocus>
+                            <input type="text" name="email" class="form-control" style="max-width: 260px;" placeholder="Email" autofocus value="{{ old('email', request()->cookie('remembered_email')) }}">
                         </div>
                         @error('email')
                             <div class="text-danger text-center mb-2">{{ $message }}</div>
                         @enderror
                         <div class="mb-3 d-flex justify-content-center">
-                            <input type="password" name="password" class="form-control" style="max-width: 260px;" placeholder="Password" >
+                            <input type="password" name="password" class="form-control" style="max-width: 260px;" placeholder="Password"  value="{{ old('email', request()->cookie('remembered_password')) }}">
                         </div>
                         @error('password')
                             <div class="text-danger text-center mb-2">{{ $message }}</div>
                         @enderror
+                        @php
+                        $rememberedEmail = request()->cookie('remembered_email');
+                        @endphp
+
                         <div class="mb-3 form-check d-flex justify-content-center">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember" style="margin-top:6px;">
-                            <label class="form-check-label ms-2" for="remember">Remember Me</label>
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember" style="margin-top:6px;" {{ old('remember') || $rememberedEmail ? 'checked' : '' }}>
+                        <label class="form-check-label ms-2" for="remember">Remember Me</label>
                         </div>
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary btn-lg mt-2 w-100" style="max-width: 160px;">

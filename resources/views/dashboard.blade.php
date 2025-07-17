@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-  <h2>Welcome to Dashboard</h2>
+  <h2>Welcome to Dashboard {{session('user_id')}}</h2>
   <p>This is the main content area. You can show your projects, tasks, etc.</p>
 
   <div class="card mt-4">

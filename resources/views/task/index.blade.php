@@ -27,7 +27,7 @@
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th style="text-align: center;">SL</th>
+                <th style="text-align: center;">SL </th>
                 <th style="text-align: center;">Task Id</th>
                 <th style="text-align: center;">Title</th>
                 <th style="text-align: center;">Description</th>
