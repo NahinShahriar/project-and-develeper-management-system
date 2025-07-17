@@ -18,11 +18,7 @@ class UserController extends Controller
     {
         return view('dashboard');
     }
-   
-
-   
-
-
+    
     public function task_update(Request $req,$id)
     {
     //    dd($req->all());
@@ -43,28 +39,49 @@ class UserController extends Controller
 //             $email = $request->email;
 //             return view('password_set', compact('token', 'email'));
 //         }
-    public function create(Request $request, $token)
-    {
-    // Force logout if someone is logged in
+//     public function create(Request $request, $token)
+//     {
+//     // Force logout if someone is logged in
+//     if (Auth::check()) 
+//         {
+//         Auth::logout();
+//         }
+
+//     $email = $request->query('email'); // get ?email=user@gmail.com
+
+//     // (Optional but recommended) check if token exists
+//     $exists = DB::table('password_resets')
+//                 ->where('email', $email)
+//                 ->where('token', $token)
+//                 ->exists();
+
+//     if (!$exists) {
+//         return redirect()->route('login.form')
+//             ->with('error', 'This password reset link is invalid or expired.');
+//     }
+
+//     return view('password_set', compact('token', 'email'));
+//    }
+
+
+public function create(Request $request, $token)
+{
     if (Auth::check()) {
         Auth::logout();
     }
 
-    $email = $request->query('email'); // get ?email=user@gmail.com
+    $email = $request->query('email');
 
-    // (Optional but recommended) check if token exists
-    $exists = DB::table('password_resets')
-                ->where('email', $email)
-                ->where('token', $token)
-                ->exists();
+    $reset = DB::table('password_resets')->where('email', $email)->first();
 
-    if (!$exists) {
+    if (!$reset || !Hash::check($token, $reset->token)) {
         return redirect()->route('login.form')
             ->with('error', 'This password reset link is invalid or expired.');
     }
 
     return view('password_set', compact('token', 'email'));
 }
+
 
 
 
