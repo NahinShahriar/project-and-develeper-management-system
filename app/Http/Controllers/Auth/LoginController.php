@@ -34,8 +34,15 @@ class LoginController extends Controller
         Cookie::queue(Cookie::forget('remembered_email'));
         Cookie::queue(Cookie::forget('remembered_password'));
         }
-        $userId = auth()->id();
-        $request->session()->put('user_id', $userId);  
+        // $userId = auth()->id();
+        // $request->session()->put('user_id', $userId);  
+        // $request->session()->put('user_name', auth()->user()->name);
+        session([
+        'user_id'   => auth()->user()->id,
+        'user_name' => auth()->user()->name,
+        'email'     => auth()->user()->email
+         ]);
+
         if(Auth::user()->role=='admin')
         {      
         return redirect()->route('dashboard')->with('success','Login Successfully'); 

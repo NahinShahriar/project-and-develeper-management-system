@@ -12,7 +12,11 @@
  <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Project Manager</a>
+       @if(Auth::check() && Auth::user()->role=='admin')
+      <a class="navbar-brand" href="{{route('dashboard')}}">Project Management</a>
+      @else
+      <a class="navbar-brand" href="{{route('task.index')}}">Project Management</a>
+      @endif
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,7 +25,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           @if(Auth::check() && Auth::user()->role=='admin')
           <li class="nav-item">
-            <a class="nav-link active" href="#">Dashboard</a>
+            <a class="nav-link active" href="{{route('dashboard')}}">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{route('projects.index')}}">Projects</a>

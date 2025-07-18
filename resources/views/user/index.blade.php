@@ -24,6 +24,7 @@
                 <th style="text-align: center;">SL</th>
                 <th style="text-align: center;">Name</th>
                 <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Joined</th>
                 <th colspan="3" style="text-align: center;">Action</th>
             </tr>
         </thead>
@@ -33,6 +34,7 @@
             <td style="text-align: center;">{{ $index + 1 }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
+            <td>{{ $user->created_at->format('d M Y') }}</td>
             <td>
                 <form action="{{ route('users.edit', $user->id) }}" method="get">
                     <button type="submit" class="btn btn-sm btn-warning">Edit</button>

@@ -114,7 +114,11 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center">No tasks found.</td>
+                    @if(Auth::user()->role == 'admin')
+                    <td colspan="9" class="text-center">No tasks found.</td>
+                    @else
+                    <td colspan="8" class="text-center">No tasks found.</td>
+                    @endif
                 </tr>
             @endforelse
             

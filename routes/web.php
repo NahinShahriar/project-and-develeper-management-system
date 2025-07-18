@@ -32,7 +32,7 @@ Route::get('/', function () {
  * Routes for logged-in users
  */
 Route::middleware('auth')->group(function () {
-    Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
+    Route::get('/tasklist', [TaskController::class, 'index'])->name('task.index');
     //  Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
     Route::get('/seetask/{id}', [TaskController::class, 'show_task']);
 

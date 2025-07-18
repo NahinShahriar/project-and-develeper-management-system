@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
@@ -14,10 +15,27 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
+    // public function index()
+    // {  
+    //     $projects=Project::count();
+    //     $task_assigned=Task::count();
+    //     $recent = Task::latest()->take(5)->get();
+
+
+
+    //     return view('dashboard',compact('projects','task_assigned','recent'));
+    // }
     public function index()
     {
-        return view('dashboard');
+       
+        $projects = Project::count();
+        $task_assigned = Task::whereIn('status', ['in_progress', 'todo'])->count();
+        $recent = Task::latest()->take(5)->get();
+        $userName = session('user_name') ?? auth()->user()->name;
+        return view('dashboard', compact('projects', 'task_assigned', 'recent'))
+        ->with('user_name', $userName);
     }
+
     
     public function task_update(Request $req,$id)
     {
