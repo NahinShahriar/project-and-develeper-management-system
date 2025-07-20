@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 use App\Notifications\ProjectNotification;
+use App\Notifications\ProjectupdateNotification;
+use App\Notifications\ProjectdeleteNotification;
 
 class ProjectController extends Controller
 {
@@ -64,10 +66,10 @@ class ProjectController extends Controller
         $data->end_date=$valiedate['end_date'];
         $data->created_by=$user_id;
         $data->save();
-        $notify_users=User::where('role','=','tl')->get();
+        $notify_users=User::where('role','=','pm')->get();
         foreach($notify_users as $notify_user)
         {
-            $notify_user->notify(new ProjectNotification($data->name) );
+            $notify_user->notify(new ProjectNotification($data) );
         }
        return redirect()->route('projects.index')->with('success', 'Project created successfully!');
 
@@ -81,7 +83,13 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $project=Project::findOrFail($id);
+        if (!Auth::check() || (Auth::user()->role !== 'admin' && Auth::user()->role !== 'pm')) {
+        Auth::logout();
+        return redirect()->route('homepage')->with('error', 'Unauthorized');
+    }
+
+        return view('projects.show',compact('project'));
     }
 
     /**
@@ -123,7 +131,12 @@ class ProjectController extends Controller
         $data->created_by=$user_id;
         if ($data->isDirty())
         {
-            $data->update();
+            $data->save();
+            $notify_users=User::where('role','=','pm')->get();
+            foreach($notify_users as $notify_user)
+            {
+                $notify_user->notify(new ProjectupdateNotification($data) );
+            }
             return redirect()->route('projects.index')->with('success', 'Project Updated successfully!');
         }
      
@@ -140,7 +153,13 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         $data=  Project::findOrFail($id);
+        $projectClone = clone $data;
         $data->delete();
+        $notify_users=User::where('role','=','pm')->get();
+            foreach($notify_users as $notify_user)
+            {
+                $notify_user->notify(new ProjectdeleteNotification($projectClone) );
+            }
         return redirect()->route('projects.index')->with('success', 'Project Deleted successfully!');
     }
 }

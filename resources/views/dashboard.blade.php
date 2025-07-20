@@ -56,7 +56,7 @@
             <ul class="list-group list-group-flush">
                 @forelse($recent as $task)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ $task->name  }}
+                        {{ $task->title  }}
                         <span class="badge 
                             @if(strtolower($task->status) === 'todo') bg-info
                             @elseif(strtolower($task->status) === 'done') bg-success

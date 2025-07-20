@@ -12,7 +12,7 @@
  <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-       @if(Auth::check() && Auth::user()->role=='admin')
+       @if(Auth::check() && (Auth::user()->role=='admin'||Auth::user()->role=='pm'))
       <a class="navbar-brand" href="{{route('dashboard')}}">Project Management</a>
       @else
       <a class="navbar-brand" href="{{route('task.index')}}">Project Management</a>
@@ -23,7 +23,7 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          @if(Auth::check() && Auth::user()->role=='admin')
+          @if(Auth::check() && (Auth::user()->role=='admin'||Auth::user()->role=='pm'))
           <li class="nav-item">
             <a class="nav-link active" href="{{route('dashboard')}}">Dashboard</a>
           </li>
@@ -72,9 +72,10 @@
 
   <!-- Footer -->
   <footer class="bg-dark text-white text-center py-3 mt-auto">
-    &copy; 2025 Project Manager. All rights reserved.
+    &copy; @php echo date('Y') @endphp Project Manager. All rights reserved.
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+ 

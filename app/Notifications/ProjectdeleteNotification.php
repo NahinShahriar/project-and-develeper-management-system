@@ -9,26 +9,21 @@ use Illuminate\Notifications\Notification;
 use App\Models\Project;
 use Illuminate\Queue\SerializesModels;
 
-class ProjectNotification extends Notification implements ShouldQueue
+class ProjectdeleteNotification extends Notification implements ShouldQueue
 {
     use Queueable,SerializesModels;
 
     /**
-     * The project instance.
-     *
-     * @var \App\Models\Project
-     */
-    public $project;
-
-    /**
      * Create a new notification instance.
      *
-     * @param  \App\Models\Project  $project
      * @return void
      */
+    public $project;
+  
+    
     public function __construct(Project $project)
     {
-        $this->project = $project;
+        $this->project=$project;
     }
 
     /**
@@ -51,15 +46,10 @@ class ProjectNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('New Project Added')
-            ->line('A new project has been added: ' . $this->project->name)
-
-            // THIS IS THE CORRECT WAY
-            // It uses the named route 'projects.show' created by Route::resource()
-            // and passes the project's ID as the required parameter.
-            ->action('View Project', route('projects.show', $this->project->id))
-
-            ->line('Thank you for using our application!');
+                    ->subject("Project {$this->project->name}")
+                    ->line(" project has been Deleted.")
+                    // ->action('View Project', route('projects.show', $this->project->id))
+                    ->line('Thank you.');
     }
 
     /**

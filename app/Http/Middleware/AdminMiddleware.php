@@ -21,7 +21,9 @@ class AdminMiddleware
         {
             return $next($request);
         }
+           
             session()->flash('msg', 'You are Not Allowed Please Login');
+            auth()->logout();
             return  redirect()->route('homepage');
     }
 }

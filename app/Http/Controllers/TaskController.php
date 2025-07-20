@@ -48,7 +48,24 @@ class TaskController extends Controller
         return view('task.edit',compact('task','users'));
 
       }
+    
 
+        public function status_update(Request $req,$id)
+    {
+    //    dd($req->all());
+           $data=Task::findOrFail($id);
+           $data->status=$req->status;
+           $data->comments=$req->comments ?? '';
+           if($data->isDirty())
+           {
+             $data->save();
+             return back()->with('success','Task Updated Successfully');
+           }
+           return back()->with('success','No Changes');
+      
+
+
+    }
       public function task_update(Request $req,$id)
       {
          $task=Task::with('assignedUser')->findOrFail($id);

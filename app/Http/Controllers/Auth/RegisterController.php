@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\PasswordsetMail;
-use Illuminate\Support\Facades\Password;
+use App\Events\UserRegister;
 class RegisterController extends Controller
 {
     
@@ -47,9 +45,7 @@ class RegisterController extends Controller
             $user->name=$request->name;
             $user->email=trim($request->email);  
             $user->save();  
-            $token = Password::createToken($user);
-            $link = url(route('password.reset', ['token' => $token, 'email' => $user->email], false));
-            Mail::to($user->email)->send(new PasswordsetMail( $user->name,$random_password,$link)); 
+            event(new UserRegister($user,$random_password));
             return redirect()->route('users.index')->with('success','User Added  and mail sent Successfully');
      }
 

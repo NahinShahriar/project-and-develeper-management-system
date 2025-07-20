@@ -37,16 +37,7 @@ class UserController extends Controller
     }
 
     
-    public function task_update(Request $req,$id)
-    {
-    //    dd($req->all());
-           $data=Task::findOrFail($id);
-           $data->status=$req->status;
-           $data->save();
-           return back();
-
-
-    }
+   
 //    public function create(Request $request, $token)
 //    {
 //         // { if(Auth::check())

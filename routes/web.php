@@ -43,8 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks/store', [TaskController::class, 'task_store'])->name('task.store');
     Route::get('/tasks/edit/{id}', [TaskController::class, 'task_edit'])->name('task.edit');
     Route::put('/tasks/update/{id}', [TaskController::class, 'task_update'])->name('task.update');
-    Route::post('/tasks/status_update/{id}', [UserController::class, 'task_update'])->name('status.update');
-    Route::post('/tasks/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
+    Route::put('/tasks/status_update/{id}', [TaskController::class, 'status_update'])->name('status.update');
     // Logout route 
     // Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -71,4 +70,6 @@ Route::middleware('auth')->group(function () {
 
           //for sendmail
         Route::post('/sendmail/{id}', [MailController::class, 'send_mail'])->name('users.sendMail');
+         //task delete
+        Route::post('/tasks/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
     });

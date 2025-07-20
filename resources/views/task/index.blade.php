@@ -37,6 +37,7 @@
                  @endif
                 <th style="text-align: center;">Status</th>
                 <th style="text-align: center;">Due Date</th>
+                 <th style="text-align: center;">Comments</th>
                 <th colspan="2" style="text-align: center;">Action</th>
             </tr>
         </thead>
@@ -62,6 +63,7 @@
                         @else
                             <form action="{{ route('status.update', $task->id) }}" method="POST">
                                 @csrf
+                                @method("PUT")
                                 <select name="status">
                                     <option value="todo" {{ $task->status == 'todo' ? 'selected' : '' }}>Todo</option>
                                     <option value="in_progress" {{ $task->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
@@ -90,14 +92,19 @@
                             </td>
                         @endif
 
-
+                     @if(Auth::user()->role=='admin')
+                        <td>{{$task->comments}}</td>
+                     @endif
                     @if(Auth::user()->role=='user')
+                    <td>
+                        <input type="text" name="comments" value="{{$task->comments?$task->comments: ''}}">
+                    </td>
                     <td>
                         
                         <button type="submit" class="btn btn-sm btn-primary">Update</button>
                     </td>
                             </form>
-                        @endif
+                     @endif
 
                         @if(Auth::user()->role == 'admin')
                     <td> <form action="{{route('task.edit',$task->id)}}" method="get">
@@ -115,9 +122,9 @@
             @empty
                 <tr>
                     @if(Auth::user()->role == 'admin')
-                    <td colspan="9" class="text-center">No tasks found.</td>
+                    <td colspan="10" class="text-center">No tasks found.</td>
                     @else
-                    <td colspan="8" class="text-center">No tasks found.</td>
+                    <td colspan="9" class="text-center">No tasks found.</td>
                     @endif
                 </tr>
             @endforelse
