@@ -26,7 +26,9 @@ class AddColumnToTasksTable extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            //
+             if (Schema::hasColumn('tasks', 'deleted_at')) {
+                $table->dropSoftDeletes(); // OR $table->dropColumn('deleted_at');
+            }
         });
     }
 }

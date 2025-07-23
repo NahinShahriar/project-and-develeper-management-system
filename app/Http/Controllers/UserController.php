@@ -177,9 +177,9 @@ public function create(Request $request, $token)
     public function update(Request $request, $id)
         {
             $user = User::findOrFail($id);
-
             $rules = [
                 'name' => 'required|string',
+                'image' => 'mimes:jpg,jpeg,png|max:3000',
             ];
 
             // Only allow email change if the current user is admin
@@ -189,8 +189,14 @@ public function create(Request $request, $token)
                 // For non-admin, force email to current one so they can't change it
                 $request->merge(['email' => $user->email]);
             }
-
-            $validated = $request->validate($rules);
+             $validated = $request->validate($rules);
+            if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $file_name = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $file_name);
+            $validated['images'] = $file_name;
+             //dd('Image uploaded:', $file_name);
+            }
             $user->update($validated);
 
             return redirect()->route('task.index')->with('success', 'Profile Updated Successfully');

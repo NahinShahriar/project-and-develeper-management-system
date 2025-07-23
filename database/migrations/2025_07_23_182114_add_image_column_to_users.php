@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToUsers extends Migration
+class AddImageColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,10 @@ class AddColumnToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->softDeletes();
+            // Add the column only if it does not exist
+            if (!Schema::hasColumn('users', 'images')) {
+                $table->string('images')->default('default_profile.jpg');
+            }
         });
     }
 
@@ -26,8 +29,9 @@ class AddColumnToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            if (Schema::hasColumn('users', 'deleted_at')) {
-                $table->dropSoftDeletes(); // OR $table->dropColumn('deleted_at');
+            // Drop the column if it exists
+            if (Schema::hasColumn('users', 'images')) {
+                $table->dropColumn('images');
             }
         });
     }

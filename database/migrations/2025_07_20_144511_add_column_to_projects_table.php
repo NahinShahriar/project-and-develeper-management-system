@@ -26,7 +26,9 @@ class AddColumnToProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('projects', 'deleted_at')) {
+                $table->dropSoftDeletes(); // OR $table->dropColumn('deleted_at');
+            }
         });
     }
 }

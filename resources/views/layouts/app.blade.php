@@ -45,6 +45,9 @@
         <!-- Right Side -->
           @if(Auth::check())
         <ul class="navbar-nav mb-2 mb-lg-0">
+          <li>
+            <img src="{{ asset('images/' . Auth::user()->images) }}" alt="Profile" width="47" height="40" class="rounded-circle"> 
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
               <i class="bi bi-person-circle"></i> {{ ucfirst( Auth::user()->name)}}
@@ -72,10 +75,9 @@
 
   <!-- Footer -->
   <footer class="bg-dark text-white text-center py-3 mt-auto">
-    &copy; @php echo date('Y') @endphp Project Manager. All rights reserved.
+    &copy; {{ date('Y') }} Project Manager. All rights reserved.
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
- 

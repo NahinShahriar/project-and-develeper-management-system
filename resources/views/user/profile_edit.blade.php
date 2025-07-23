@@ -25,7 +25,7 @@
     @endif
 
     {{-- Project create form --}}
-    <form action="{{ route('profile.update',$user->id) }}" method="POST" style="width:400px">
+    <form action="{{ route('profile.update',$user->id) }}" method="POST" style="width:400px" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -60,8 +60,13 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
-       
+         <div class="mb-3">
+            <label for="file" class="form-label">Profile Image </label>
+            <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" value="{{$user->images}}">
+            @error('image')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
 
         <div class="d-flex justify-content-between">
             <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a>

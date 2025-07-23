@@ -14,13 +14,11 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+  
     Route::middleware(['auth:sanctum','admin'])->group(function()
 {
 
-     Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
+    Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
     //  Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
     Route::get('/seetask/{id}', [TaskController::class, 'show_task']);
 

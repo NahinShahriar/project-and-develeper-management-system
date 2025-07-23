@@ -28,7 +28,10 @@ class AddForeignKeyToAssignedByInTasksTable extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            //
+              if (Schema::hasColumn('tasks', 'assigned_by')) {
+                $table->dropForeign(['assigned_by']);
+                $table->dropColumn('assigned_by');
+            }
         });
     }
 }

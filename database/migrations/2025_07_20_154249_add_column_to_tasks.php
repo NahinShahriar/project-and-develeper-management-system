@@ -26,7 +26,9 @@ class AddColumnToTasks extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            //
+             if (Schema::hasColumn('tasks', 'comments')) {
+                $table->dropColumn('comments');
+            }
         });
     }
 }
