@@ -23,7 +23,7 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          @if(Auth::check() && (Auth::user()->role=='admin'||Auth::user()->role=='pm'))
+          @can('can_view_admin')
           <li class="nav-item">
             <a class="nav-link active" href="{{route('dashboard')}}">Dashboard</a>
           </li>
@@ -34,7 +34,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('users.index')}}">Users</a>
           </li>
-           @endif
+           @endcan
 
             @if(Auth::check())
              <li class="nav-item">

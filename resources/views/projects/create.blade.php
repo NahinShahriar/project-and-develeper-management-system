@@ -49,6 +49,13 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+         <div class="mb-3">
+            <select name="status" id="status" class="form-select">
+                <option value="todo">Todo</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
 
         <div class="row mb-3">
             <div class="col-md-6">

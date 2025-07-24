@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,24 +16,14 @@ use App\Http\Controllers\TaskController;
 */
 
   
-    Route::middleware(['auth:sanctum','admin'])->group(function()
+    Route::middleware(['auth:sanctum'])->group(function()
 {
 
-    Route::get('/tasks', [TaskController::class, 'index'])->name('task.index');
-    //  Route::get('/seetasks/{id}', [TaskController::class, 'show_tasks']);
-    Route::get('/seetask/{id}', [TaskController::class, 'show_task']);
-
-    Route::get('/tasks/search', [TaskController::class, 'index'])->name('task.search');
-
-    // Task CRUD
-    Route::get('/tasks/create', [TaskController::class, 'task_create'])->name('task.create');
-    Route::post('/tasks/store', [TaskController::class, 'task_store'])->name('task.store');
-    Route::get('/tasks/edit/{id}', [TaskController::class, 'task_edit'])->name('task.edit');
-    Route::put('/tasks/update/{id}', [TaskController::class, 'task_update'])->name('task.update');
-    Route::post('/tasks/status_update/{id}', [UserController::class, 'task_update'])->name('status.update');
-    Route::post('/tasks/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
+    Route::get('/tasklist', [TaskController::class, 'index']);
+     Route::get('/tasklist/search', [TaskController::class, 'index']);
+     Route::post('/logout', [LoginController::class, 'logout']);
 
 });
 
-
+  Route::post('/login', [LoginController::class, 'login']);
    

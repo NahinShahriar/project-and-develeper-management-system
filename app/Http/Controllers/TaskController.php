@@ -43,6 +43,7 @@ class TaskController extends Controller
       public function task_edit($id)
       {
         $task=Task::with('assignedUser')->findOrFail($id);
+        $this->authorize('view',$task);
         $users = User::where('role','user')->get();
 
         return view('task.edit',compact('task','users'));
@@ -69,6 +70,7 @@ class TaskController extends Controller
       public function task_update(Request $req,$id)
       {
          $task=Task::with('assignedUser')->findOrFail($id);
+          $this->authorize('update',$task);
          $task->title=$req->title;
          $task->description= $req->description;
          $task->due_date=     $req->due_date;
@@ -85,6 +87,7 @@ class TaskController extends Controller
       public function task_delete(Request $req,$id)
       {
          $task=Task::with('assignedUser')->findOrFail($id);
+          $this->authorize('delete', $task);
          $task->delete();
         return redirect()->route('task.index')->with('success','Task Deleted Successfully');
 
@@ -105,6 +108,7 @@ class TaskController extends Controller
         'status' => 'required|in:todo,in_progress,done',
          'project_id' => 'required|exists:projects,id',
         'assigned_to' => 'required|exists:users,id',
+        'priority' => 'required',
         ]);
         $assigned_by=Auth::id();
         // dd( $assigned_by);
@@ -116,6 +120,7 @@ class TaskController extends Controller
         $task->project_id = $validated['project_id'];
         $task->assigned_to = $validated['assigned_to'];
         $task->assigned_by= $assigned_by;
+        $task->priority= $validated['priority'];
         $task->save();
         $notify_user=User::find($task->assigned_to);
         $notify_user->notify(new TaskCreateNotification( $task->id,$task->title));
@@ -138,6 +143,14 @@ class TaskController extends Controller
           auth()->logout();
           return redirect()->route('homepage');
 
+      }
+
+      public function update_priority(Request $request,$id)
+      {
+        $task=Task::findOrFail($id);
+        $task->priority=$request->priority;
+        $task->update();
+        return back()->with('success','Priority Status changed');
       }
 
 

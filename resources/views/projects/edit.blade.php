@@ -50,6 +50,14 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select name="status" id="" class="form-select">
+                <option value="todo"      {{$projects->status=='todo'? 'selected':''}}>To do</option>
+                <option value="in_progress"{{$projects->status=='in_progress'? 'selected':''}}>In Progress</option>
+                <option value="completed"{{$projects->status=='completed'? 'selected':''}}>Completed</option>
+            </select>
+        </div>
 
         <div class="row mb-3">
             <div class="col-md-6">

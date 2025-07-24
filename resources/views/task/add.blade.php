@@ -19,6 +19,13 @@
             <textarea name="description" id="description" 
                       class="form-control" rows="3"></textarea>
         </div>
+         <div class="mb-3">
+            <select name="priority" class="form-select">
+                <option value="high" >High</option>
+                <option value="medium"  selected >Medium</option>
+                <option value="low" >Low</option>
+            </select>
+        </div>
 
         <div class="mb-3">
             <label for="due_date" class="form-label">Due Date</label>

@@ -2,7 +2,7 @@
 @section('title','Task List')
 @section('content')
 <div class="container mt-4">
-    @if(Auth::user()->role=='admin')
+    @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
     <a href="{{route('task.create')}}" class="btn btn-success mb-3">+ Add New Task</a>
     @endif
           @if (session('success'))
@@ -32,12 +32,13 @@
                 <th style="text-align: center;">Title</th>
                 <th style="text-align: center;">Description</th>
                  <th style="text-align: center;">Assigned By</th>
-                 @if(Auth::user()->role=='admin')
+                 @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
                     <th>Assigned</th>
                  @endif
                 <th style="text-align: center;">Status</th>
+                <th style="text-align: center;">Priority</th>
                 <th style="text-align: center;">Due Date</th>
-                 <th style="text-align: center;">Comments</th>
+                 <th style="text-align: center;">Comment</th>
                 <th colspan="2" style="text-align: center;">Action</th>
             </tr>
         </thead>
@@ -49,11 +50,11 @@
                     <td>{{ $task->title }}</td>
                     <td>{{ $task->description }}</td>
                     <td>{{ $task->assignbyUser ? $task->assignbyUser->name : 'N/A' }}</td>
-                     @if(Auth::user()->role=='admin')
+                     @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
                         <td>{{ $task->assignedUser ? $task->assignedUser->name : 'N/A' }}</td>
                      @endif
                     <td>
-                        @if(Auth::user()->role=='admin')
+                        @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
                             <span class="badge 
                                 @if($task->status == 'done') bg-success 
                                 @elseif($task->status == 'in_progress') bg-warning 
@@ -70,6 +71,23 @@
                                     <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
                                 </select>
                                 @endif
+                    </td>
+                    <td>
+                         @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
+                       <form action="{{ route('priority.update', $task->id) }}" method="POST">
+                         @csrf
+                         @method("PUT")
+                        <select name="priority" onchange="this.form.submit()" >
+                            <option value="high" {{ $task->priority == 'high' ? 'selected' : '' }}>High</option>
+                            <option value="medium" {{ $task->priority == 'medium' ? 'selected' : '' }}>Medium</option>
+                            <option value="low" {{ $task->priority == 'low' ? 'selected' : '' }}>Low</option>
+                        </select>
+                       </form>
+                         @endif
+                          @if(Auth::user()->role=='user')
+                         {{$task->priority}}
+                         @endif
+                      
                     </td>
                         @php
                             $today = date('Y-m-d');
@@ -92,7 +110,7 @@
                             </td>
                         @endif
 
-                     @if(Auth::user()->role=='admin')
+                     @if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
                         <td>{{$task->comments}}</td>
                      @endif
                     @if(Auth::user()->role=='user')
@@ -106,7 +124,7 @@
                             </form>
                      @endif
 
-                        @if(Auth::user()->role == 'admin')
+                        @if(Auth::user()->role == 'admin'||Auth::user()->role=='pm')
                     <td> <form action="{{route('task.edit',$task->id)}}" method="get">
                             <button type="submit" class="btn btn-sm btn-warning">Edit</button>
                         </form></td>
@@ -121,7 +139,7 @@
                 </tr>
             @empty
                 <tr>
-                    @if(Auth::user()->role == 'admin')
+                    @if(Auth::user()->role == 'admin'||Auth::user()->role=='pm')
                     <td colspan="10" class="text-center">No tasks found.</td>
                     @else
                     <td colspan="9" class="text-center">No tasks found.</td>

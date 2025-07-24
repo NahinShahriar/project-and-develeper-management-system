@@ -39,10 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/search', [TaskController::class, 'index'])->name('task.search');
 
     // Task CRUD
-    Route::get('/tasks/create', [TaskController::class, 'task_create'])->name('task.create');
-    Route::post('/tasks/store', [TaskController::class, 'task_store'])->name('task.store');
-    Route::get('/tasks/edit/{id}', [TaskController::class, 'task_edit'])->name('task.edit');
-    Route::put('/tasks/update/{id}', [TaskController::class, 'task_update'])->name('task.update');
+    
     Route::put('/tasks/status_update/{id}', [TaskController::class, 'status_update'])->name('status.update');
     // Logout route 
     // Route::get('/logout', [UserController::class, 'logout'])->name('logout');
@@ -72,4 +69,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/sendmail/{id}', [MailController::class, 'send_mail'])->name('users.sendMail');
          //task delete
         Route::post('/tasks/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
+        Route::get('/tasks/create', [TaskController::class, 'task_create'])->name('task.create');
+        Route::post('/tasks/store', [TaskController::class, 'task_store'])->name('task.store');
+        Route::get('/tasks/edit/{id}', [TaskController::class, 'task_edit'])->name('task.edit');
+        Route::put('/tasks/update/{id}', [TaskController::class, 'task_update'])->name('task.update');
+        Route::put('/update_priority/{id}', [TaskController::class, 'update_priority'])->name('priority.update');
     });

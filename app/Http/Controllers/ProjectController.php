@@ -56,6 +56,7 @@ class ProjectController extends Controller
             'description'=>'required|max:150',
             'start_date'=>'required|date',
             'end_date'=>'required|date',
+            'status'=>'required',
 
         ]);
         $user_id=Auth::id();
@@ -64,6 +65,7 @@ class ProjectController extends Controller
         $data->description=$valiedate['description'];
         $data->start_date=$valiedate['start_date'];
         $data->end_date=$valiedate['end_date'];
+        $data->status=$valiedate['status'];
         $data->created_by=$user_id;
         $data->save();
         $notify_users=User::where('role','=','pm')->get();
@@ -120,6 +122,7 @@ class ProjectController extends Controller
             'description'=>'required|max:150',
             'start_date'=>'required|date',
             'end_date'=>'required|date',
+            'status'=>'required',
 
         ]);
         $user_id=Auth::id();
@@ -129,6 +132,7 @@ class ProjectController extends Controller
         $data->start_date=$valiedate['start_date'];
         $data->end_date=$valiedate['end_date'];
         $data->created_by=$user_id;
+        $data->status=$valiedate['status'];
         if ($data->isDirty())
         {
             $data->save();

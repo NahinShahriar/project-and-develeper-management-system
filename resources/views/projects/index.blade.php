@@ -25,6 +25,7 @@
                 <th style="text-align: center;">SL</th>
                 <th style="text-align: center;">Name</th>
                 <th style="text-align: center;">Description</th>
+                 <th style="text-align: center;">Status</th>
                 <th style="text-align: center;">Start Date</th>
                 <th style="text-align: center;">End Date</th>
                 <th style="text-align: center;">Created By</th>
@@ -39,6 +40,7 @@
                     <td>{{$index+1}}</td>
                     <td>{{$project->name}}</td>
                     <td>{{$project->description}}</td>
+                    <td>{{ ucfirst(str_replace('_', ' ', $project->status)) }}</td>
                     <td>{{$project->start_date}}</td>
                     <td>{{$project->end_date}}</td>
                     <td>{{$project->creator->name}}</td>
@@ -59,7 +61,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center">No Projects found.</td>
+                    <td colspan="10" class="text-center">No Projects found.</td>
                 </tr>
             @endforelse
             
