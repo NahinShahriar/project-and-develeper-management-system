@@ -115,15 +115,24 @@
                         $rememberedEmail = request()->cookie('remembered_email');
                         @endphp
 
-                        <div class="mb-3 form-check d-flex justify-content-center">
-                        <input type="checkbox" class="form-check-input" id="remember" name="remember" style="margin-top:6px;" {{ old('remember') || $rememberedEmail ? 'checked' : '' }}>
-                        <label class="form-check-label ms-2" for="remember">Remember Me</label>
+                        <div class="mb-3 d-flex justify-content-center align-items-center">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember" style="margin-top: 0.3rem;" {{ old('remember') || $rememberedEmail ? 'checked' : '' }}>
+                        <label class="form-check-label ms-2 mb-0" for="remember">Remember Me</label>
                         </div>
+
+                        <div class="mb-3 d-flex justify-content-center">
+                        <a href="{{ route('password.request') }}" class="text-decoration-none text-primary">
+                        Forgot Password?
+                        </a>
+                        </div>
+
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg mt-2 w-100" style="max-width: 160px;">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login
-                            </button>
+                        <button type="submit" class="btn btn-primary btn-lg w-100" style="max-width: 160px;">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </button>
                         </div>
+
+
                     </form>
                 </div>
             </div>

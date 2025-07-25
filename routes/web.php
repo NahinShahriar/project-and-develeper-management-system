@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserManageController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,12 @@ Route::get('/', function () {
     // Password reset form & submit
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
     Route::post('password/reset', [UserController::class, 'password_update'])->name('password.update');
+    //forgot Password
+    Route::get('password/reset', [PasswordResetController::class, 'view'])->name('password.request');
+    Route::post('password/reset', [PasswordResetController::class, 'send_mail'])->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'view_page'])->name('reset.password');
+    Route::post('/reset-password/{token}', [PasswordResetController::class, 'update_password'])->name('update.password');
+
 });
 
 /** 
