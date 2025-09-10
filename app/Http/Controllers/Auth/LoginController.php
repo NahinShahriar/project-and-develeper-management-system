@@ -43,14 +43,15 @@ class LoginController extends Controller
         'email'     => auth()->user()->email
          ]);
 
-        if(Auth::user()->role=='admin')
+        if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
         {      
         return redirect()->route('dashboard')->with('success','Login Successfully'); 
         }
-        return redirect()->route('task.index')->with('success','Login Successfully'); 
-        }
+        
         else
         {
+            return redirect()->route('task.index')->with('success','Login Successfully'); 
+        }
         return back()->withErrors([
         'error'=>'Inavalid Credentials',
         ])->withInput();

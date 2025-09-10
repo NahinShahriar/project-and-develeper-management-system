@@ -9,10 +9,20 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+        if ($role == 'admin' || $role == 'pm') {
+            return redirect('/dashboard');
+        } elseif ($role == 'user') {
+            return redirect()->route('task.index');
+        }
+    }
+    return redirect('/login');
 })->name('homepage');
+
 
 /** 
  * Routes for guests only (not logged in)
@@ -22,7 +32,7 @@ Route::get('/', function () {
     Route::middleware('guest')->group(function () {
     //Route::get('/login', [UserController::class, 'showLoginForm'])->name('login.form');
     // Route::post('/dashboard', [UserController::class, 'login'])->name('login');
-    Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
+     Route::post('/dashboard', [LoginController::class, 'login'])->name('login');
 
     // Password reset form & submit
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
