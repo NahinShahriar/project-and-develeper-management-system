@@ -14,50 +14,49 @@ class LoginController extends Controller
     {
         return view('welcome');
     }
-    public function login( Request $request)
-    {
-        $credentials=$request->validate([
-        'email'=>'required|email',
-        'password'=>'required',
+   public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $remember = $request->has('remember');
+
+    // Attempt login
+    if (Auth::attempt($credentials, $remember)) {
+        $request->session()->regenerate();
+
+        if ($remember) {
+            // Set cookies for email and password
+            Cookie::queue('remembered_email', $request->email, 43200); // 30 days
+            Cookie::queue('remembered_password', $request->password, 43200);
+        } else {
+            Cookie::queue(Cookie::forget('remembered_email'));
+            Cookie::queue(Cookie::forget('remembered_password'));
+        }
+
+        // Store user info in session
+        session([
+            'user_id'   => auth()->user()->id,
+            'user_name' => auth()->user()->name,
+            'email'     => auth()->user()->email,
         ]);
 
-        $remember=$request->has('remember');
-        if(Auth::attempt($credentials,$remember))
-        {    
-        $request->session()->regenerate();
-        if ($remember) {
-        // Set cookie for email, expires in 1 month
-        Cookie::queue('remembered_email', $request->email, 43200); // 43200 minutes = 30 days
-        Cookie::queue('remembered_password', $request->password, 43200); // 43200 minutes = 30 days
+        // Redirect based on role
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pm') {
+            return redirect()->route('dashboard')->with('success', 'Login Successfully');
         } else {
-        // Remove cookie if exists
-        Cookie::queue(Cookie::forget('remembered_email'));
-        Cookie::queue(Cookie::forget('remembered_password'));
+            return redirect()->route('task.index')->with('success', 'Login Successfully');
         }
-        // $userId = auth()->id();
-        // $request->session()->put('user_id', $userId);  
-        // $request->session()->put('user_name', auth()->user()->name);
-        session([
-        'user_id'   => auth()->user()->id,
-        'user_name' => auth()->user()->name,
-        'email'     => auth()->user()->email
-         ]);
-
-        if(Auth::user()->role=='admin'||Auth::user()->role=='pm')
-        {      
-        return redirect()->route('dashboard')->with('success','Login Successfully'); 
-        }
-        
-        else
-        {
-            return redirect()->route('task.index')->with('success','Login Successfully'); 
-        }
-        return back()->withErrors([
-        'error'=>'Inavalid Credentials',
-        ])->withInput();
-        }
-
     }
+
+    // Wrong credentials case
+    return back()->withErrors([
+        'error' => 'Invalid Credentials',
+    ])->withInput();
+}
+
      public function logout(Request $request)
     {
         Auth::logout();
